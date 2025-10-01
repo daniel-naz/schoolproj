@@ -1,36 +1,40 @@
-using OldQueue = System.Collections.Queue;
-
 class Queue<T>
 {
-    OldQueue queue = new OldQueue();
-
-    public Queue()
-    {
-        queue = new OldQueue();
-    }
-
-    public bool IsEmpty()
-    {
-        return queue.Count == 0;
-    }
+    private Node<T>? last;
+    private Node<T>? first;
 
     public T Remove()
     {
-        return (T)queue.Dequeue()!;
+        T value = first!.GetValue();
+        first = first.GetNext();
+        if (first == null) last = null;
+        return value;
     }
 
     public T Head()
     {
-        return (T)queue.Peek()!;
+        return first!.GetValue();
     }
 
     public void Insert(T value)
     {
-        queue.Enqueue(value);
+        var node = new Node<T>(value);
+        if (last == null)
+        {
+            first = last = node;
+        }
+        else
+        {
+            last.SetNext(node);
+            last = node;
+        }
     }
 
     public override string ToString()
     {
-        return string.Join(", ", from s in queue.Cast<T>() select s);
+        if (first == null) return "[]";
+        return $"[{string.Join(", ", first.Enumerate())}]";
     }
+
+    public bool IsEmpty() => first == null;
 }

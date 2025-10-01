@@ -1,47 +1,34 @@
-using System.Collections.Concurrent;
-
 class Node<T>
 {
-    T value;
-    Node<T>? next;
+    private T value;
+    private Node<T>? next;
 
-    public Node(T v)
+    public Node(T value)
     {
-        value = v;
+        this.value = value;
     }
 
-    public Node(T v, Node<T> next) : this(v)
-    {
-        this.next = next;
-    }
-
-    public T GeValue()
-    {
-        return value;
-    }
-
-    public Node<T>? GetNext()
-    {
-        return next;
-    }
-
-    public bool HasNext()
-    {
-        return next != null;
-    }
-
-    public void SetValue(T v)
-    {
-        value = v;
-    }
-
-    public void SetNext(Node<T> next)
+    public Node(T value, Node<T>? next) : this(value)
     {
         this.next = next;
     }
 
     public override string ToString()
     {
-        return value?.ToString() + (next != null ? " -> " + next.ToString() : "");
+        return string.Join(" -> ", Enumerate());
+    }
+
+    public T GetValue() => value;
+    public Node<T>? GetNext() => next;
+    public bool HasNext() => next != null;
+    public void SetValue(T value) => this.value = value;
+    public void SetNext(Node<T> next) => this.next = next;
+
+    public IEnumerable<T> Enumerate()
+    {
+        for (var p = this; p != null; p = p.GetNext())
+        {
+            yield return p.GetValue();
+        }
     }
 }

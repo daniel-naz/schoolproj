@@ -1,41 +1,34 @@
-using OldStack = System.Collections.Stack;
-
 class Stack<T>
 {
-    OldStack stack = new OldStack();
-
-    public Stack()
-    {
-        stack = new OldStack();
-    }
-
-    public bool IsEmpty()
-    {
-        return stack.Count == 0;
-    }
+    private Node<T>? last;
 
     public T Pop()
     {
-        return (T)stack.Pop()!;
+        T value = last!.GetValue();
+        last = last.GetNext();
+        return value;
     }
 
     public T Top()
     {
-        return (T)stack.Peek()!;
+        return last!.GetValue();
     }
 
     public void Push(T value)
     {
-        stack.Push(value);
+        last = new Node<T>(value, last);
     }
 
     public override string ToString()
     {
-        return string.Join(", ", from s in stack.Cast<T>().Reverse() select s);
+        if (last == null) return "[]";
+        return $"[{string.Join(", ", last.Enumerate())}]";
     }
+
+    public bool IsEmpty() => last == null;
 }
 
 class StackInt : Stack<int>
 {
-
+    
 }

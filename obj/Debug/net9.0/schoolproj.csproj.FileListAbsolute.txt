@@ -1,0 +1,15 @@
+C:\Users\danie\Desktop\New folder (8)\schoolproj\bin\Debug\net9.0\schoolproj.exe
+C:\Users\danie\Desktop\New folder (8)\schoolproj\bin\Debug\net9.0\schoolproj.deps.json
+C:\Users\danie\Desktop\New folder (8)\schoolproj\bin\Debug\net9.0\schoolproj.runtimeconfig.json
+C:\Users\danie\Desktop\New folder (8)\schoolproj\bin\Debug\net9.0\schoolproj.dll
+C:\Users\danie\Desktop\New folder (8)\schoolproj\bin\Debug\net9.0\schoolproj.pdb
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\schoolproj.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\schoolproj.AssemblyInfoInputs.cache
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\schoolproj.AssemblyInfo.cs
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\schoolproj.csproj.CoreCompileInputs.cache
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\schoolproj.sourcelink.json
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\schoolproj.dll
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\refint\schoolproj.dll
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\schoolproj.pdb
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\schoolproj.genruntimeconfig.cache
+C:\Users\danie\Desktop\New folder (8)\schoolproj\obj\Debug\net9.0\ref\schoolproj.dll
