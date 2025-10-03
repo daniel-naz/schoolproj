@@ -72,7 +72,7 @@ class BinNode<T>
         if (type == BinNodeType.DoubleLinkedList) return PrintDoubleLinkedList(new());
         if (type == BinNodeType.Tree) return PrintTree("", true);
         if (type == BinNodeType.LoopingDoubleLinkedList) return PrintLoopingDoubleLinkedList(new(), null);
-
+        if (type == BinNodeType.GeneralGraph) return PrintGeneralGraph(new());
 
 
         return "Invalid";
@@ -105,25 +105,85 @@ class BinNode<T>
         return s;
     }
 
-    private string PrintLoopingDoubleLinkedList(HashSet<BinNode<T>> visited, BinNode<T>? parent)
+    private string PrintLoopingDoubleLinkedList(HashSet<BinNode<T>> visited, BinNode<T>? _parent)
     {
-        //↺↻
-        visited.Add(this);
-
-        bool goLeft = left != null && !visited.Contains(left);
-        bool goRight = right != null && !visited.Contains(right);
-
-        string leftStr = goLeft
-            ? left!.PrintLoopingDoubleLinkedList(visited, this) + " <-> "
-            : left == null ? "null <- " : "";
-
-        string rightStr = goRight
-            ? " <-> " + right!.PrintLoopingDoubleLinkedList(visited, this)
-            : right == null ? " -> null" : "";
-
-        return leftStr + value + rightStr;
+        throw new NotImplementedException();
     }
 
+    private string PrintGeneralGraph(HashSet<BinNode<T>> visited)
+    {
+        // Collect connected component (BFS) and assign stable IDs
+        var seen = new HashSet<BinNode<T>>();
+        var order = new List<BinNode<T>>();
+        var ids = new Dictionary<BinNode<T>, int>();
+        var q = new Queue<BinNode<T>>();
+
+        void Enq(BinNode<T>? n)
+        {
+            if (n != null && seen.Add(n))
+            {
+                ids[n] = ids.Count + 1;
+                order.Add(n);
+                q.Insert(n);
+                visited.Add(n);
+            }
+        }
+
+        Enq(this);
+        while (!q.IsEmpty())
+        {
+            var u = q.Remove();
+            Enq(u.left);
+            Enq(u.right);
+        }
+
+        string Label(BinNode<T>? n) => n == null ? "null" : $"#{ids[n]}";
+        string Val(BinNode<T> n) => n.value?.ToString() ?? "null";
+
+        // Build simple table: Id | Value | Left | Right
+        var rows = new List<string[]>
+        {
+            (["Id", "Value", "Left", "Right"])
+        };
+        foreach (var n in order)
+        {
+            rows.Add([$"#{ids[n]}", Val(n), Label(n.left), Label(n.right)]);
+        }
+        
+        // Column widths
+        int cols = rows[0].Length;
+        int[] w = new int[cols];
+        for (int c = 0; c < cols; c++)
+        {
+            int mx = 0;
+            foreach (var r in rows) if (r[c].Length > mx) mx = r[c].Length;
+            w[c] = mx;
+        }
+
+        string Sep()
+        {
+            string s = "+";
+            for (int c = 0; c < cols; c++) s += new string('-', w[c] + 2) + "+";
+            return s;
+        }
+
+        // Render
+        string sep = Sep();
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine(sep);
+        sb.Append("|");
+        for (int c = 0; c < cols; c++) sb.Append(" ").Append(rows[0][c].PadRight(w[c])).Append(" |");
+        sb.AppendLine();
+        sb.AppendLine(sep);
+        for (int r = 1; r < rows.Count; r++)
+        {
+            sb.Append("|");
+            for (int c = 0; c < cols; c++) sb.Append(" ").Append(rows[r][c].PadRight(w[c])).Append(" |");
+            sb.AppendLine();
+        }
+        sb.Append(sep);
+        return sb.ToString();
+    }
 
     public void SetValue(T value) => this.value = value;
     public void SetLeft(BinNode<T>? left) => this.left = left;

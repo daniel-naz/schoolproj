@@ -39,6 +39,27 @@ class Program
         n4.SetRight(n5); n5.SetLeft(n4);
         n5.SetRight(n1);
 
-        System.Console.WriteLine(n3);
+        var a = new BinNode<int>(1);
+        var b = new BinNode<int>(2);
+        var c = new BinNode<int>(3);
+        var d = new BinNode<int>(4);
+        var e = new BinNode<int>(5);
+
+        // Bidirectional links
+        a.SetLeft(b); b.SetRight(a);   // OK
+        a.SetRight(c); c.SetLeft(a);    // OK
+
+        // Diamond: B and C both lead to D
+        b.SetRight(d);                  // BROKEN back-pointer on purpose (D.left != B)
+        c.SetRight(d); d.SetLeft(c);    // OK
+
+        // Tail + cycle
+        d.SetRight(e); e.SetLeft(d);    // OK
+        e.SetRight(b); b.SetLeft(e);    // OK, creates cycle E -> B -> ... with B.left = E
+
+        // Test (your PrintGeneralGraph expects a visited set)
+        Console.WriteLine(a);
+
+        //System.Console.WriteLine(n1);
     }
 }
