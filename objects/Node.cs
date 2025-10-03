@@ -15,7 +15,7 @@ class Node<T>
 
     public override string ToString()
     {
-        return string.Join(" -> ", Enumerate());
+        return $"{string.Join(" -> ", Enumerate())} -> null";
     }
 
     public T GetValue() => value;
