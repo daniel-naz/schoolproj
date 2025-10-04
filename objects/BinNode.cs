@@ -13,6 +13,7 @@ class BinNode<T>
     private T value;
     private BinNode<T>? left, right;
 
+
     public BinNode(T value)
     {
         this.value = value;
@@ -32,13 +33,40 @@ class BinNode<T>
 
     private BinNodeType DetectType()
     {
-        return BinNodeType.Invalid;
+        if (left == null && right == null) return BinNodeType.SingleNode;
+
+        var visited = new HashSet<BinNode<T>>();
+        bool looping = false;
+        bool linkedlist = true;
+
+        void Traverse(BinNode<T>? curr, BinNode<T>? parent)
+        {
+            if (curr == null || !visited.Add(curr)) return;
+
+            // Doubly-linked invariants (reciprocity)
+            if (curr.left != null && curr.left.right != curr) linkedlist = false;
+            if (curr.right != null && curr.right.left != curr) linkedlist = false;
+
+            // Undirected-cycle detection (ignore the edge we came from)
+            if (curr.left != null && curr.left != parent && visited.Contains(curr.left)) looping = true;
+            if (curr.right != null && curr.right != parent && visited.Contains(curr.right)) looping = true;
+
+            Traverse(curr.left, curr);
+            Traverse(curr.right, curr);
+        }
+
+        Traverse(this, null);
+
+        if (linkedlist)
+            return looping ? BinNodeType.LoopingDoubleLinkedList
+                           : BinNodeType.DoubleLinkedList;
+
+        return looping ? BinNodeType.GeneralGraph
+                       : BinNodeType.Tree;
     }
 
     private string ToString(BinNodeType type)
     {
-        Console.WriteLine("type : " + type);
-
         if (type == BinNodeType.SingleNode) return $"null <- {value} -> null";
         if (type == BinNodeType.DoubleLinkedList) return PrintDoubleLinkedList(new());
         if (type == BinNodeType.Tree) return PrintTree("", true);
@@ -77,7 +105,19 @@ class BinNode<T>
 
     private string PrintLoopingDoubleLinkedList()
     {
-        return "";
+        HashSet<BinNode<T>> visited = new();
+        string str = "";
+
+        void BuildString(BinNode<T> curr)
+        {
+            if (!visited.Add(curr)) return;
+            str += (str == "" ? "" : " <-> ") + $"{curr.value}";
+            BuildString(curr.right!);
+        };
+
+        BuildString(this);
+
+        return $"↻({str})↺";
     }
 
     private string PrintGeneralGraph(HashSet<BinNode<T>> visited)

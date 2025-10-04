@@ -41,6 +41,6 @@ class Program
         n5.SetRight(n1);
         n1.SetLeft(n5);
 
-        System.Console.WriteLine(n1);
+        System.Console.WriteLine(n2);
     }
 }
