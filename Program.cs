@@ -26,7 +26,6 @@ class Program
                 )
             );
 
-        // 5-node doubly linked list: 1 <-> 2 <-> 3 <-> 4 <-> 5
         var n1 = new BinNode<int>(1);
         var n2 = new BinNode<int>(2);
         var n3 = new BinNode<int>(3);
@@ -37,29 +36,11 @@ class Program
         n2.SetRight(n3); n3.SetLeft(n2);
         n3.SetRight(n4); n4.SetLeft(n3);
         n4.SetRight(n5); n5.SetLeft(n4);
+
+        // close the list properly (both directions consistent)
         n5.SetRight(n1);
+        n1.SetLeft(n5);
 
-        var a = new BinNode<int>(1);
-        var b = new BinNode<int>(2);
-        var c = new BinNode<int>(3);
-        var d = new BinNode<int>(4);
-        var e = new BinNode<int>(5);
-
-        // Bidirectional links
-        a.SetLeft(b); b.SetRight(a);   // OK
-        a.SetRight(c); c.SetLeft(a);    // OK
-
-        // Diamond: B and C both lead to D
-        b.SetRight(d);                  // BROKEN back-pointer on purpose (D.left != B)
-        c.SetRight(d); d.SetLeft(c);    // OK
-
-        // Tail + cycle
-        d.SetRight(e); e.SetLeft(d);    // OK
-        e.SetRight(b); b.SetLeft(e);    // OK, creates cycle E -> B -> ... with B.left = E
-
-        // Test (your PrintGeneralGraph expects a visited set)
-        Console.WriteLine(a);
-
-        //System.Console.WriteLine(n1);
+        System.Console.WriteLine(n1);
     }
 }

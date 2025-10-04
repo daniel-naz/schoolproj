@@ -32,48 +32,18 @@ class BinNode<T>
 
     private BinNodeType DetectType()
     {
-        if (left == null && right == null)
-        {
-            return BinNodeType.SingleNode;
-        }
-
-        HashSet<BinNode<T>> visited = new();
-
-        bool looping = false;
-        bool linkedList = true;
-
-        void Traverse(BinNode<T>? curr, BinNode<T>? parent)
-        {
-            if (curr == null || !visited.Add(curr)) return;
-
-            if (curr.left != null && curr.left != parent && visited.Contains(curr.left)) looping = true;
-            else if (curr.left != null && curr.left.right != curr) linkedList = false;
-
-            if (curr.right != null && curr.right != parent && visited.Contains(curr.right)) looping = true;
-            else if (curr.right != null && curr.right.left != curr) linkedList = false;
-
-            Traverse(curr.left, curr);
-            Traverse(curr.right, curr);
-        }
-
-        Traverse(this, null);
-
-        if (linkedList && !looping) return BinNodeType.DoubleLinkedList;
-        if (linkedList && looping) return BinNodeType.LoopingDoubleLinkedList;
-        if (!linkedList && !looping) return BinNodeType.Tree;
-        if (!linkedList && looping) return BinNodeType.GeneralGraph;
-
         return BinNodeType.Invalid;
     }
 
     private string ToString(BinNodeType type)
     {
+        Console.WriteLine("type : " + type);
+
         if (type == BinNodeType.SingleNode) return $"null <- {value} -> null";
         if (type == BinNodeType.DoubleLinkedList) return PrintDoubleLinkedList(new());
         if (type == BinNodeType.Tree) return PrintTree("", true);
-        if (type == BinNodeType.LoopingDoubleLinkedList) return PrintLoopingDoubleLinkedList(new(), null);
+        if (type == BinNodeType.LoopingDoubleLinkedList) return PrintLoopingDoubleLinkedList();
         if (type == BinNodeType.GeneralGraph) return PrintGeneralGraph(new());
-
 
         return "Invalid";
     }
@@ -105,9 +75,9 @@ class BinNode<T>
         return s;
     }
 
-    private string PrintLoopingDoubleLinkedList(HashSet<BinNode<T>> visited, BinNode<T>? _parent)
+    private string PrintLoopingDoubleLinkedList()
     {
-        throw new NotImplementedException();
+        return "";
     }
 
     private string PrintGeneralGraph(HashSet<BinNode<T>> visited)
@@ -149,7 +119,7 @@ class BinNode<T>
         {
             rows.Add([$"#{ids[n]}", Val(n), Label(n.left), Label(n.right)]);
         }
-        
+
         // Column widths
         int cols = rows[0].Length;
         int[] w = new int[cols];
