@@ -3,6 +3,7 @@
 
 # User-specific files
 /obj/
+obj/
 *.suo
 *.user
 *.sln.docstates
